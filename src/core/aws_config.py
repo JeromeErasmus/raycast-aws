@@ -23,7 +23,7 @@ class AWSConfig:
   )
 
   def __init__(self):
-    self.session = boto3.Session(profile_name='aws-drive-staging-admin')
+    self.session = boto3.Session(profile_name='default')
 
 
   def get_client(self, **kwargs):
