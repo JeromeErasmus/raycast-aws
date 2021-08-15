@@ -25,17 +25,24 @@ from core.functions import Functions
 
 config = AWSConfig()
 client = config.session.client('rds')  # type: botostubs.RDS
+table_headers = {
+    'DBClusterIdentifier': 'DBClusterIdentifier',
+    'Status': 'Status',
+    'BackupRetentionPeriod': 'Retention',
+    'Capacity': 'Capacity',
+    'EngineMode': 'EngineMode'}
+table_columns = {'DBClusterIdentifier', 'Status',
+                 'BackupRetentionPeriod', 'EngineMode', 'Capacity'}
 
 
-def describe_db_clusters(search_filter):
-    response = AWSRequests.send_request(client.describe_db_clusters)
+def describe_db_clusters(*args):
+    
+    response = AWSRequests.send_request(
+        client.describe_db_clusters
+    )
 
-    if response is None or response['DBClusters'] is None:
-        print("None found")
-        return False
-
-    for item in Functions.search_list(search_filter, 'DBClusterIdentifier', response['DBClusters']):
-        print(item['DBClusterIdentifier'])
+    items = Functions.search_list(args[0], 'DBClusterIdentifier', response['DBClusters'])
+    Functions.display(items, table_headers, table_columns)
 
 
 if len(sys.argv) > 1:

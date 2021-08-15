@@ -25,22 +25,28 @@ from core.functions import Functions
 
 config = AWSConfig()
 client = config.session.client('rds')  # type: botostubs.RDS
+table_headers = {
+    'DBClusterSnapshotIdentifier': 'DBClusterSnapshotIdentifier',
+    'Status': 'Status',
+    'SnapshotType': 'SnapshotType'}
+table_columns = {'DBClusterSnapshotIdentifier',
+                 'Status', 'SnapshotType'}
 
 
-def describe_db_clusters(search_filter):
+def describe_db_cluster_snapshots(*args):
     response = AWSRequests.send_request(client.describe_db_cluster_snapshots)
 
-    if response is None or response['DBClusterSnapshots'] is None:
-        print("None found")
-        return False
-
-    for item in Functions.search_list(search_filter, 'DBClusterSnapshotIdentifier', response['DBClusterSnapshots']):
-        print(item['DBClusterSnapshotIdentifier'])
+    items = Functions.search_list(
+        args[0],
+        'DBClusterSnapshotIdentifier',
+        response['DBClusterSnapshots']
+        )
+    Functions.display(items, table_headers, table_columns)
 
 
 if len(sys.argv) > 1:
-    describe_db_clusters(sys.argv[1])
+    describe_db_cluster_snapshots(sys.argv[1])
 else:
-    describe_db_clusters(None)
+    describe_db_cluster_snapshots(None)
 
 exit(0)

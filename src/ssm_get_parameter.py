@@ -19,8 +19,6 @@ import sys
 import botocore
 import botostubs
 import boto3
-import pyperclip3
-from tabulate import tabulate
 from collections import OrderedDict
 from core.config import AWSConfig
 from core.requests import AWSRequests
@@ -37,18 +35,9 @@ def get_parameter(*args):
         client.get_parameter,
         Name=args[0]
     )
-
-    if response is None or response['Parameter'] is None:
-        print('None found')
-        return False
-
-    item = Functions.pluck([response['Parameter']], table_columns)
-
-    print(tabulate(item, headers=table_headers))
-    print(Fontcol.GREEN, '\nCopied to clipboard')
-
-    pyperclip3.copy(response['Parameter']['Value'])
-
+    Functions.display([response['Parameter']], table_headers, table_columns)
+    Functions.copyClipboard(response['Parameter']['Value'])
+    
 
 if len(sys.argv) > 1:
     get_parameter(sys.argv[1])

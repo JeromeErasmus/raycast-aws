@@ -19,7 +19,6 @@ import sys
 import botocore
 import botostubs
 import boto3
-from tabulate import tabulate
 from core.config import AWSConfig
 from core.requests import AWSRequests
 from core.functions import Functions
@@ -37,19 +36,14 @@ def describe_parameters(*args):
             {'Key': 'Name', 'Option': 'Contains', 'Values': [args[0]]}]
     else:
         ParameterFilters = []
-    
+
     response = AWSRequests.send_request(
         client.describe_parameters,
         ParameterFilters=ParameterFilters,
         MaxResults=50
     )
-    if response is None or response['Parameters'] is None:
-        print('None found')
-        return False
 
-    items = Functions.pluck(response['Parameters'], table_columns)
-    print(tabulate(items, headers=table_headers))
-
+    Functions.display(response['Parameters'], table_headers, table_columns)
 
 if len(sys.argv) > 1:
     describe_parameters(sys.argv[1])

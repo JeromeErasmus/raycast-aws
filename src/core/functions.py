@@ -6,6 +6,8 @@
 
 
 import boto3
+from tabulate import tabulate
+import pyperclip3
 from botocore.config import Config
 from collections import OrderedDict
 from fuzzysearch import find_near_matches
@@ -18,6 +20,7 @@ class Functions:
     @staticmethod
     def search_list(term, key, search_list):
         ''' Searches a list for a given key and value.
+
         '''
         if(not search_list or not key or not term):
             return search_list
@@ -43,6 +46,29 @@ class Functions:
             filtered.append(OrderedDict( {key: item[key] for key in item.keys() & keys}) )
 
         return filtered
+
+    @staticmethod
+    def display(items, table_headers, table_columns):
+        ''' Displays result(s) to rendered table 
+
+        Plucks items from a dict from the specified table_column keys
+        '''
+        if items is None:
+            print(Fontcol.YELLOW, '\nNo results found')
+            return False
+
+        items = Functions.pluck(items, table_columns)
+        print(tabulate(items, headers=table_headers))
+
+
+    @staticmethod
+    def copyClipboard(value):
+        ''' Copies value to clipboard
+
+        '''
+        pyperclip3.copy(value)
+        print(Fontcol.GREEN, '\nCopied to clipboard')
+
 
 
 class Fontcol:

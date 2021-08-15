@@ -24,7 +24,7 @@ class AWSConfig:
     )
 
     def __init__(self):
-        self.session = boto3.Session(profile_name='default')
+        self.session = boto3.Session(profile_name='defaulr')
 
     def get_client(self, **kwargs):
         """Creates a AWS Client configuration
