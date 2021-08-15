@@ -7,7 +7,7 @@
 # @raycast.packageName AWS
 
 # Optional parameters:
-# @raycast.icon 🐓
+# @raycast.icon images/aws-logo-light.png
 # @raycast.argument1 { "type": "text", "placeholder": "DB cluster identifier"}
 # @raycast.argument2 { "type": "text", "placeholder": "Snapshot name"}
 

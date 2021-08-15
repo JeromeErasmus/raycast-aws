@@ -7,11 +7,11 @@
 # @raycast.packageName AWS
 
 # Optional parameters:
-# @raycast.icon 🐓
+# @raycast.icon images/aws-logo-light.png
 # @raycast.argument1 { "type": "text", "placeholder": "bucket name filter", "optional": true}
 
 # Documentation:
-# @raycast.description List S3 Buckets
+# @raycast.description S3 List Buckets
 # @raycast.author Jerome Erasmus
 # @raycast.authorURL https://github.com/JeromeErasmus
 

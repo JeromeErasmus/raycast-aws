@@ -7,7 +7,7 @@
 # @raycast.packageName AWS
 
 # Optional parameters:
-# @raycast.icon 🐓
+# @raycast.icon images/aws-logo-light.png
 # @raycast.argument1 { "type": "text", "placeholder": "Snapshot name filter", "optional": true}
 
 # Documentation:
