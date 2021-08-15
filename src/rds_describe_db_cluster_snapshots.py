@@ -29,7 +29,7 @@ client = config.session.client('rds')  # type: botostubs.RDS
 
 def describe_db_clusters(search_filter):
     response = AWSRequests.send_request(client.describe_db_cluster_snapshots)
-    
+
     if response is None or response['DBClusterSnapshots'] is None:
         print("None found")
         return False

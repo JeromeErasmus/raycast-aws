@@ -10,23 +10,23 @@ from botocore.config import Config
 
 __all__ = ['AWSConfig', 'get_client']
 
+
 class AWSConfig:
-  client = None
-  session = None
-  my_config = Config(
-    region_name='ap-southeast-2',
-    signature_version='v4',
-    retries={
-        'max_attempts': 10,
-        'mode': 'standard'
-    }
-  )
+    client = None
+    session = None
+    my_config = Config(
+        region_name='ap-southeast-2',
+        signature_version='v4',
+        retries={
+            'max_attempts': 10,
+            'mode': 'standard'
+        }
+    )
 
-  def __init__(self):
-    self.session = boto3.Session(profile_name='default')
+    def __init__(self):
+        self.session = boto3.Session(profile_name='aws-drive-staging-admin')
 
-
-  def get_client(self, **kwargs):
-    """Creates a AWS Client configuration
-    """
-    return self.client
+    def get_client(self, **kwargs):
+        """Creates a AWS Client configuration
+        """
+        return self.client

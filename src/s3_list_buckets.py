@@ -29,7 +29,7 @@ client = config.session.client('s3')  # type: botostubs.S3
 
 def list_buckets(search_filter):
     response = AWSRequests.send_request(client.list_buckets)
-    
+
     if response is None or response['Buckets'] is None:
         print("None found")
         return False

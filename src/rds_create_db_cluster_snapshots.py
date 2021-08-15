@@ -29,17 +29,18 @@ client = config.session.client('rds')  # type: botostubs.RDS
 
 
 def create_db_cluster_snapshot(*args):
-  response = AWSRequests.send_request(
-    client.create_db_cluster_snapshot,
-    DBClusterIdentifier=args[0],
-    DBClusterSnapshotIdentifier=args[1]
-  )
+    response = AWSRequests.send_request(
+        client.create_db_cluster_snapshot,
+        DBClusterIdentifier=args[0],
+        DBClusterSnapshotIdentifier=args[1]
+    )
 
-  if response is None or response['DBClusterSnapshot'] is None:
-      print("Error creating snapshot")
-      return False
-  
-  print("snapshot created: ", response['DBClusterSnapshot']['DBClusterSnapshotIdentifier'])
+    if response is None or response['DBClusterSnapshot'] is None:
+        print("Error creating snapshot")
+        return False
+
+    print("snapshot created: ",
+          response['DBClusterSnapshot']['DBClusterSnapshotIdentifier'])
 
 
 if len(sys.argv) == 3:

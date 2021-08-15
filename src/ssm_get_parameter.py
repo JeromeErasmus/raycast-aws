@@ -20,28 +20,34 @@ import botocore
 import botostubs
 import boto3
 import pyperclip3
+from tabulate import tabulate
+from collections import OrderedDict
 from core.config import AWSConfig
 from core.requests import AWSRequests
 from core.functions import Functions, Fontcol
 
 config = AWSConfig()
 client = config.session.client('ssm')  # type: botostubs.SSM
+table_headers = {'Name': 'Name', 'Value': 'Value'}
+table_columns = {'Name', 'Value'}
+
 
 def get_parameter(*args):
-  response = AWSRequests.send_request(
-    client.get_parameter,
-    Name=args[0]
-  )
+    response = AWSRequests.send_request(
+        client.get_parameter,
+        Name=args[0]
+    )
 
-  if response is None or response['Parameter'] is None:
-    print('None found')
-    return False
+    if response is None or response['Parameter'] is None:
+        print('None found')
+        return False
 
-  pyperclip3.copy(response['Parameter']['Value'])
+    item = Functions.pluck([response['Parameter']], table_columns)
 
-  print(Fontcol.WHITE, 'Name: ', response['Parameter']['Name'])
-  print(Fontcol.YELLOW, 'Value: ', response['Parameter']['Value'])
-  print(Fontcol.GREEN, 'Copied to clipboard')
+    print(tabulate(item, headers=table_headers))
+    print(Fontcol.GREEN, '\nCopied to clipboard')
+
+    pyperclip3.copy(response['Parameter']['Value'])
 
 
 if len(sys.argv) > 1:
