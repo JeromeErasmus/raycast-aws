@@ -27,10 +27,16 @@ config = AWSConfig()
 client = config.session.client('ssm')  # type: botostubs.SSM
 
 
-def describe_parameters(search_filter):
+def describe_parameters(*args):
+
+  if args[0] is not None:
+    ParameterFilters=[{'Key': 'Name', 'Option': 'Contains', 'Values': [args[0]]}]
+  else:
+    ParameterFilters=[]
+
   response = AWSRequests.send_request(
     client.describe_parameters,
-    ParameterFilters=[{'Key': 'Name', 'Option': 'Contains', 'Values': [search_filter]}],
+    ParameterFilters=ParameterFilters,
     MaxResults=50
   )
   if response is None or response['Parameters'] is None:
@@ -44,6 +50,6 @@ def describe_parameters(search_filter):
 if len(sys.argv) > 1:
     describe_parameters(sys.argv[1])
 else:
-    describe_parameters('')
+    describe_parameters(None)
 
 exit(0)

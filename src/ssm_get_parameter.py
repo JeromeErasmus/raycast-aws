@@ -27,7 +27,7 @@ from core.functions import Functions, Fontcol
 config = AWSConfig()
 client = config.session.client('ssm')  # type: botostubs.SSM
 
-def describe_parameters(*args):
+def get_parameter(*args):
   response = AWSRequests.send_request(
     client.get_parameter,
     Name=args[0]
@@ -45,8 +45,8 @@ def describe_parameters(*args):
 
 
 if len(sys.argv) > 1:
-    describe_parameters(sys.argv[1])
+    get_parameter(sys.argv[1])
 else:
-    describe_parameters(None)
+    get_parameter(None)
 
 exit(0)
