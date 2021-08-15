@@ -12,10 +12,14 @@ __all__ = ['AWSRequests', 'send_request']
 class AWSRequests:
 
   @staticmethod
-  def send_request(client_request):
+  def send_request(client_request, **kwargs):
     """Handles AWS Boto response
     """
+
     try:
-        return client_request()
+      return client_request(**kwargs)
     except botocore.exceptions.ClientError as error:
-        raise error
+      if error.response['Error']['Code'] == 'LimitExceededException':
+        print('API call limit exceeded; backing off and retrying...')
+      else:
+        print(error.response['Error']['Message'])
