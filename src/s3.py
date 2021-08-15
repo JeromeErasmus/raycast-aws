@@ -17,35 +17,24 @@
 
 import sys
 import botocore
-import botostubs, boto3
-from core.aws_config import AWSConfig
-from fuzzysearch import find_near_matches
+import botostubs
+import boto3
+from core.config import AWSConfig
+from core.requests import AWSRequests
+from core.functions import Functions
 
 config = AWSConfig()
-client = config.session.client('s3') # type: botostubs.S3
+client = config.session.client('s3')  # type: botostubs.S3
+
 
 def list_buckets(search_filter):
-    try:
-        response = client.list_buckets()
-        if response['ResponseMetadata']['HTTPStatusCode'] == 200:
-            for item in search_list(search_filter, 'Name', response['Buckets']):
-                print(item['Name'])
-    except botocore.exceptions.ClientError as error:
-        raise error
+    response = AWSRequests.send_request(client.list_buckets)
 
+    if not response['Buckets']:
+        return False
 
-def search_list(term, key, search_list):
-    ''' Searches a list for a given key and value.
-    '''
-    if(not search_list or not key or not term):
-        return search_list
-    
-    filtered = list()
-    for item in search_list:
-        if find_near_matches(term, item[key], max_l_dist=1):
-            filtered.append(item)
-    
-    return filtered
+    for item in Functions.search_list(search_filter, 'Name', response['Buckets']):
+        print(item['Name'])
 
 
 if len(sys.argv) > 1:
